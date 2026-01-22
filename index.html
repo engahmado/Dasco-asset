@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tone.js for audio synthesis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Dasco Asset System</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { height: 6px; width: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background-color: #94a3b8; }
+
+        /* Modal Transitions & Styling */
+        .modal-backdrop { 
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background-color: rgba(15, 23, 42, 0.6); 
+            display: flex; justify-content: center; align-items: center; 
+            z-index: 50; opacity: 0; pointer-events: none; 
+            transition: opacity 0.2s ease-in-out; 
+            backdrop-filter: blur(2px);
+        }
+        .modal-backdrop.visible { opacity: 1; pointer-events: auto; }
+        
+        .modal-content { 
+            background-color: #ffffff; 
+            padding: 1.5rem; 
+            border-radius: 0.75rem; 
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1); 
+            width: 90%; 
+            max-width: 600px;
+            transform: scale(0.95); 
+            transition: transform 0.2s ease-in-out; 
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-backdrop.visible .modal-content { transform: scale(1); }
+
+        /* Print styles */
+        @media print {
+            body > *:not(#printable-content) { display: none !important; }
+            #printable-content { display: block !important; width: 100%; position: absolute; top: 0; left: 0; padding: 20px; background: white; z-index: 9999; }
+            #printable-content table { width: 100%; border-collapse: collapse; direction: ltr; margin-top: 20px; }
+            #printable-content th, #printable-content td { border: 1px solid #000; padding: 8px; text-align: left; font-size: 12px; }
+            #printable-content th { background-color: #f1f5f9; font-weight: bold; }
+            #printable-content h2 { text-align: center; margin-bottom: 10px; font-size: 24px; font-weight: bold; }
+            #printable-content .print-meta { text-align: center; margin-bottom: 20px; font-size: 12px; color: #666; }
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden text-slate-800">
+
+    <!-- Top Header -->
+    <header class="bg-white border-b border-slate-200 px-4 py-3 md:px-6 md:py-4 flex flex-col justify-center items-center shrink-0 shadow-sm relative z-20">
+        <h1 class="text-2xl md:text-3xl font-bold text-slate-800 tracking-tight">Dasco <span class="text-blue-600">Asset</span></h1>
+        <div class="text-[8px] md:text-[10px] text-slate-400 font-medium tracking-widest mt-1 uppercase">DEVELOPED BY AHMED EMAM</div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-grow overflow-auto bg-slate-50 flex flex-col">
+        
+        <div class="flex-grow overflow-auto p-2 md:p-6">
+            <div class="max-w-7xl mx-auto h-full flex flex-col relative space-y-4 md:space-y-6">
+
+                <!-- Stats Dashboard (Cards trigger Report Modal) -->
+                <div class="grid grid-cols-3 gap-2 md:gap-6">
+                    <!-- Green Card: Working & In Use -->
+                    <div onclick="App.openReport('used')" class="bg-gradient-to-br from-emerald-500 to-emerald-700 rounded-lg md:rounded-xl shadow-md p-2 md:p-4 text-white relative overflow-hidden h-20 md:h-24 flex flex-col justify-center hover:shadow-lg transition-transform hover:-translate-y-1 cursor-pointer" title="Click to Print Report">
+                        <div class="absolute top-0 right-0 p-1 md:p-3 opacity-20"><i class="fas fa-industry text-3xl md:text-5xl"></i></div>
+                        <span class="text-emerald-100 text-[10px] md:text-xs font-bold uppercase tracking-wider relative z-10 leading-tight">WORKING (USE)</span>
+                        <span id="stat-working-used" class="text-xl md:text-3xl font-bold relative z-10 mt-0.5 md:mt-1">0</span>
+                    </div>
+
+                    <!-- Blue Card: Working & In Stock -->
+                    <div onclick="App.openReport('stock')" class="bg-gradient-to-br from-blue-500 to-blue-700 rounded-lg md:rounded-xl shadow-md p-2 md:p-4 text-white relative overflow-hidden h-20 md:h-24 flex flex-col justify-center hover:shadow-lg transition-transform hover:-translate-y-1 cursor-pointer" title="Click to Print Report">
+                        <div class="absolute top-0 right-0 p-1 md:p-3 opacity-20"><i class="fas fa-boxes text-3xl md:text-5xl"></i></div>
+                        <span class="text-blue-100 text-[10px] md:text-xs font-bold uppercase tracking-wider relative z-10 leading-tight">WORKING (STOCK)</span>
+                        <span id="stat-working-stock" class="text-xl md:text-3xl font-bold relative z-10 mt-0.5 md:mt-1">0</span>
+                    </div>
+
+                    <!-- Red Card: Not Working / Maintenance -->
+                    <div onclick="App.openReport('broken')" class="bg-gradient-to-br from-red-500 to-red-700 rounded-lg md:rounded-xl shadow-md p-2 md:p-4 text-white relative overflow-hidden h-20 md:h-24 flex flex-col justify-center hover:shadow-lg transition-transform hover:-translate-y-1 cursor-pointer" title="Click to Print Report">
+                        <div class="absolute top-0 right-0 p-1 md:p-3 opacity-20"><i class="fas fa-wrench text-3xl md:text-5xl"></i></div>
+                        <span class="text-red-100 text-[10px] md:text-xs font-bold uppercase tracking-wider relative z-10 leading-tight">MAINTENANCE</span>
+                        <span id="stat-broken" class="text-xl md:text-3xl font-bold relative z-10 mt-0.5 md:mt-1">0</span>
+                    </div>
+                </div>
+
+                <!-- Toolbar (Search & Add) -->
+                <div class="flex flex-col md:flex-row justify-between items-center gap-3 bg-white p-3 md:p-4 rounded-xl border border-slate-200 shadow-sm">
+                    <div class="w-full md:w-1/2 relative flex gap-2">
+                        <input type="text" id="main-search-input" placeholder="Search..." class="w-full p-2.5 border border-slate-300 rounded-lg outline-none focus:ring-2 focus:ring-blue-500 transition text-sm">
+                        <button onclick="App.handleMainSearch()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition flex items-center gap-2 shrink-0 text-sm">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                    <div class="w-full md:w-auto">
+                        <button onclick="App.openAddModal()" class="w-full bg-indigo-600 text-white px-4 py-2.5 rounded-lg hover:bg-indigo-700 transition font-bold flex items-center justify-center gap-2 shadow-sm text-sm">
+                            <i class="fas fa-plus-circle"></i> Add Item
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Content Table (Always shows ALL items) -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 flex-grow overflow-hidden flex flex-col">
+                    <div class="p-3 md:p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                        <h3 class="font-bold text-slate-700 text-sm md:text-base">Asset Log (All Items)</h3>
+                        <span class="text-xs text-slate-500 bg-white px-2 py-1 rounded border" id="total-items-badge">Count: 0</span>
+                    </div>
+                    <div class="overflow-auto flex-grow">
+                        <table class="w-full text-xs md:text-sm text-left whitespace-nowrap">
+                            <thead class="bg-slate-50 text-slate-600 sticky top-0">
+                                <tr>
+                                    <th class="p-3 font-bold border-b">Name</th>
+                                    <th class="p-3 font-bold border-b">Serial</th>
+                                    <th class="p-3 font-bold border-b">Location</th>
+                                    <th class="p-3 font-bold border-b">Status</th>
+                                    <th class="p-3 font-bold border-b text-center">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="assets-table-body" class="divide-y divide-slate-100">
+                                <!-- Rows rendered by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- Add/Edit Item Modal -->
+    <div id="add-item-modal" class="modal-backdrop z-50">
+        <div class="modal-content">
+            <h3 id="modal-title" class="text-xl font-bold text-slate-800 mb-6 border-b pb-3">Add New Item</h3>
+            
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Item Name</label>
+                    <input type="text" id="input-name" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. Generator 50KVA">
+                </div>
+                
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Serial Number</label>
+                    <input type="text" id="input-serial" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. SN-998877">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Condition</label>
+                        <select id="input-condition" onchange="App.toggleUsageField()" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                            <option value="working">✅ Working</option>
+                            <option value="broken">❌ Broken / Maintenance</option>
+                        </select>
+                    </div>
+                    
+                    <div id="usage-field-container">
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Usage Status</label>
+                        <select id="input-usage" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
+                            <option value="inUse">🏗️ In Use (Site)</option>
+                            <option value="inStock">📦 In Stock (Store)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Location</label>
+                    <input type="text" id="input-location" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. Rig 27 - Engine Room">
+                </div>
+            </div>
+
+            <div class="mt-8 flex justify-end gap-3">
+                <button onclick="App.closeModal('add-item-modal')" class="bg-slate-100 text-slate-700 px-6 py-2 rounded-lg hover:bg-slate-200 font-medium transition">Cancel</button>
+                <button id="modal-save-btn" onclick="App.saveItem()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-medium shadow transition">Save Item</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Results Modal (Analysis) -->
+    <div id="search-results-modal" class="modal-backdrop z-50">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="text-xl font-bold text-slate-800">Search Analysis & Results</h3>
+                <button onclick="App.closeModal('search-results-modal')" class="text-slate-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+            </div>
+
+            <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4">
+                <h4 class="text-sm text-slate-500 mb-3">Analysis for: <span id="search-term-display" class="font-bold text-blue-700 text-lg">--</span></h4>
+                <div class="grid grid-cols-4 gap-3 text-center">
+                    <div class="bg-white p-3 rounded-lg shadow-sm border border-slate-200">
+                        <span class="block text-xs text-slate-500 mb-1">Total Count</span>
+                        <span id="res-total" class="font-bold text-2xl text-slate-800">0</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm border-b-4 border-emerald-500">
+                        <span class="block text-xs text-slate-500 mb-1">Working (In Use)</span>
+                        <span id="res-used" class="font-bold text-2xl text-emerald-600">0</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm border-b-4 border-blue-500">
+                        <span class="block text-xs text-slate-500 mb-1">Working (Stock)</span>
+                        <span id="res-stock" class="font-bold text-2xl text-blue-600">0</span>
+                    </div>
+                    <div class="bg-white p-3 rounded-lg shadow-sm border-b-4 border-red-500">
+                        <span class="block text-xs text-slate-500 mb-1">Broken</span>
+                        <span id="res-broken" class="font-bold text-2xl text-red-600">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-grow overflow-auto border rounded-lg bg-white">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-slate-100 text-slate-600 sticky top-0">
+                        <tr>
+                            <th class="p-3">Name</th>
+                            <th class="p-3">Serial</th>
+                            <th class="p-3">Location</th>
+                            <th class="p-3">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="search-results-body" class="divide-y">
+                        <!-- Search Results Rows -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 flex justify-end">
+                <button onclick="App.closeModal('search-results-modal')" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-300">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report/Print Modal (NEW) -->
+    <div id="report-modal" class="modal-backdrop z-50">
+        <div class="modal-content" style="max-width: 800px;">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 id="report-modal-title" class="text-xl font-bold text-slate-800">Category Report</h3>
+                <button onclick="App.closeModal('report-modal')" class="text-slate-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            
+            <div class="bg-blue-50 p-4 rounded-lg mb-4 text-sm text-blue-700 flex items-center gap-2">
+                <i class="fas fa-info-circle"></i>
+                <span>This list contains only items in this category.</span>
+            </div>
+
+            <div class="flex-grow overflow-auto border rounded-lg bg-white" id="report-table-container">
+                <table class="w-full text-sm text-left" id="report-table">
+                    <thead class="bg-slate-100 text-slate-600 sticky top-0">
+                        <tr>
+                            <th class="p-3">Name</th>
+                            <th class="p-3">Serial</th>
+                            <th class="p-3">Location</th>
+                            <th class="p-3">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="report-body" class="divide-y">
+                        <!-- Rows rendered here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 flex justify-end gap-2">
+                <button onclick="App.closeModal('report-modal')" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-300">Close</button>
+                <button onclick="App.printReport()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 font-bold flex items-center gap-2 shadow-sm">
+                    <i class="fas fa-print"></i> Print Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Printable Area (Hidden on Screen) -->
+    <div id="printable-content" class="hidden"></div>
+
+    <script>
+        const App = {
+            state: {
+                assets: [],
+                editingId: null
+            },
+
+            init() {
+                this.loadData();
+                this.bindEvents();
+                this.updateDashboard();
+            },
+
+            loadData() {
+                const saved = localStorage.getItem('dasco_asset_v1');
+                if (saved) {
+                    this.state.assets = JSON.parse(saved);
+                } else {
+                    this.state.assets = [];
+                }
+            },
+
+            saveData() {
+                localStorage.setItem('dasco_asset_v1', JSON.stringify(this.state.assets));
+                this.updateDashboard();
+            },
+
+            bindEvents() {
+                document.getElementById('main-search-input').addEventListener('keyup', (e) => {
+                    if(e.key === 'Enter') this.handleMainSearch();
+                });
+            },
+
+            // --- DASHBOARD LOGIC ---
+            updateDashboard() {
+                let workingUsed = 0;
+                let workingStock = 0;
+                let broken = 0;
+
+                this.state.assets.forEach(item => {
+                    if (item.condition === 'broken') {
+                        broken++;
+                    } else {
+                        if (item.usage === 'inUse') workingUsed++;
+                        else workingStock++;
+                    }
+                });
+
+                this.animateNumber('stat-working-used', workingUsed);
+                this.animateNumber('stat-working-stock', workingStock);
+                this.animateNumber('stat-broken', broken);
+
+                // ALWAYS render ALL assets in the main list
+                this.renderList(this.state.assets);
+            },
+
+            renderList(items) {
+                const tbody = document.getElementById('assets-table-body');
+                document.getElementById('total-items-badge').innerText = `Count: ${items.length}`;
+                
+                if (items.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="text-center p-8 text-slate-400">No assets found. Add a new item.</td></tr>`;
+                    return;
+                }
+
+                // Show last 100 items by default (newest first)
+                const sorted = [...items].sort((a,b) => b.id - a.id).slice(0, 100);
+                
+                tbody.innerHTML = sorted.map(item => this.createRowHTML(item)).join('');
+            },
+
+            createRowHTML(item) {
+                let statusBadge = '';
+                
+                if (item.condition === 'broken') {
+                    statusBadge = `<span class="bg-red-100 text-red-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-times-circle"></i> Broken</span>`;
+                } else {
+                    if (item.usage === 'inStock') statusBadge = `<span class="bg-blue-100 text-blue-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-box"></i> Stock</span>`;
+                    else statusBadge = `<span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span>`;
+                }
+
+                return `
+                    <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
+                        <td class="p-3 font-semibold text-slate-700">${item.name}</td>
+                        <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">${item.serial || '-'}</td>
+                        <td class="p-3 text-slate-600">${item.location}</td>
+                        <td class="p-3">${statusBadge}</td>
+                        <td class="p-3 text-center">
+                            <div class="flex justify-center gap-2">
+                                <button onclick="App.editItem(${item.id})" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button onclick="App.deleteItem(${item.id})" class="text-slate-300 hover:text-red-500 transition" title="Delete">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            },
+
+            // --- REPORT & PRINT LOGIC ---
+            openReport(type) {
+                let filtered = [];
+                let title = "";
+                
+                if (type === 'used') {
+                    filtered = this.state.assets.filter(i => i.condition === 'working' && i.usage === 'inUse');
+                    title = "Report: WORKING (USE)";
+                } else if (type === 'stock') {
+                    filtered = this.state.assets.filter(i => i.condition === 'working' && i.usage === 'inStock');
+                    title = "Report: WORKING (STOCK)";
+                } else if (type === 'broken') {
+                    filtered = this.state.assets.filter(i => i.condition === 'broken');
+                    title = "Report: MAINTENANCE / BROKEN";
+                }
+
+                const tbody = document.getElementById('report-body');
+                document.getElementById('report-modal-title').innerText = title;
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-center p-6 text-slate-400">No items in this category.</td></tr>`;
+                } else {
+                    tbody.innerHTML = filtered.map(item => `
+                        <tr class="hover:bg-slate-50">
+                            <td class="p-3 font-medium">${item.name}</td>
+                            <td class="p-3 font-mono text-slate-500">${item.serial || '-'}</td>
+                            <td class="p-3">${item.location}</td>
+                            <td class="p-3 text-slate-500 text-xs">${item.date || '-'}</td>
+                        </tr>
+                    `).join('');
+                }
+
+                this.openModal('report-modal');
+            },
+
+            printReport() {
+                const title = document.getElementById('report-modal-title').innerText;
+                const rows = document.getElementById('report-body').innerHTML;
+                const count = document.getElementById('report-body').querySelectorAll('tr').length;
+                const date = new Date().toLocaleString();
+
+                const printable = document.getElementById('printable-content');
+                printable.innerHTML = `
+                    <h2>Dasco Asset - ${title}</h2>
+                    <div class="print-meta">Generated on: ${date} | Total Items: ${count}</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item Name</th>
+                                <th>Serial No.</th>
+                                <th>Location</th>
+                                <th>Date Added</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rows}
+                        </tbody>
+                    </table>
+                `;
+                
+                window.print();
+            },
+
+            // --- ACTIONS ---
+            openAddModal() {
+                this.state.editingId = null;
+                document.getElementById('input-name').value = '';
+                document.getElementById('input-serial').value = '';
+                document.getElementById('input-location').value = '';
+                document.getElementById('input-condition').value = 'working';
+                document.getElementById('input-usage').value = 'inUse';
+                document.getElementById('modal-title').innerText = "Add New Item";
+                document.getElementById('modal-save-btn').innerText = "Save Item";
+                this.toggleUsageField();
+                this.openModal('add-item-modal');
+            },
+
+            editItem(id) {
+                const item = this.state.assets.find(i => i.id === id);
+                if (!item) return;
+                this.state.editingId = id;
+                document.getElementById('input-name').value = item.name;
+                document.getElementById('input-serial').value = item.serial === 'N/A' ? '' : item.serial;
+                document.getElementById('input-location').value = item.location;
+                document.getElementById('input-condition').value = item.condition;
+                if (item.condition !== 'broken') {
+                     document.getElementById('input-usage').value = item.usage;
+                } else {
+                     document.getElementById('input-usage').value = 'inUse';
+                }
+                this.toggleUsageField();
+                document.getElementById('modal-title').innerText = "Edit Item";
+                document.getElementById('modal-save-btn').innerText = "Update Item";
+                this.openModal('add-item-modal');
+            },
+
+            toggleUsageField() {
+                const cond = document.getElementById('input-condition').value;
+                const usageDiv = document.getElementById('usage-field-container');
+                if (cond === 'broken') {
+                    usageDiv.style.opacity = '0.5';
+                    usageDiv.style.pointerEvents = 'none';
+                } else {
+                    usageDiv.style.opacity = '1';
+                    usageDiv.style.pointerEvents = 'auto';
+                }
+            },
+
+            saveItem() {
+                const name = document.getElementById('input-name').value.trim();
+                const serial = document.getElementById('input-serial').value.trim();
+                const condition = document.getElementById('input-condition').value;
+                const usage = document.getElementById('input-usage').value;
+                const location = document.getElementById('input-location').value.trim();
+
+                if (!name) { alert("Please enter item name"); return; }
+                if (!location) { alert("Please specify location"); return; }
+
+                if (this.state.editingId) {
+                    const itemIndex = this.state.assets.findIndex(i => i.id === this.state.editingId);
+                    if (itemIndex > -1) {
+                        this.state.assets[itemIndex] = {
+                            ...this.state.assets[itemIndex],
+                            name,
+                            serial: serial || "N/A",
+                            condition,
+                            usage: (condition === 'broken') ? 'broken' : usage,
+                            location
+                        };
+                    }
+                    this.state.editingId = null;
+                } else {
+                    const newItem = {
+                        id: Date.now(),
+                        name,
+                        serial: serial || "N/A",
+                        condition,
+                        usage: (condition === 'broken') ? 'broken' : usage,
+                        location,
+                        date: new Date().toLocaleDateString('en-GB')
+                    };
+                    this.state.assets.push(newItem);
+                }
+
+                this.saveData();
+                this.closeModal('add-item-modal');
+                this.playTone('success');
+            },
+
+            deleteItem(id) {
+                if(confirm("Are you sure you want to delete this item?")) {
+                    this.state.assets = this.state.assets.filter(i => i.id !== id);
+                    this.saveData();
+                }
+            },
+
+            // --- SEARCH ANALYSIS LOGIC ---
+            handleMainSearch() {
+                const query = document.getElementById('main-search-input').value.toLowerCase().trim();
+                if (!query) return;
+
+                const results = this.state.assets.filter(item => 
+                    item.name.toLowerCase().includes(query) || 
+                    (item.serial && item.serial.toLowerCase().includes(query))
+                );
+
+                let countTotal = results.length;
+                let countUsed = 0;
+                let countStock = 0;
+                let countBroken = 0;
+
+                results.forEach(r => {
+                    if (r.condition === 'broken') countBroken++;
+                    else {
+                        if (r.usage === 'inUse') countUsed++;
+                        else countStock++;
+                    }
+                });
+
+                document.getElementById('search-term-display').innerText = query;
+                document.getElementById('res-total').innerText = countTotal;
+                document.getElementById('res-used').innerText = countUsed;
+                document.getElementById('res-stock').innerText = countStock;
+                document.getElementById('res-broken').innerText = countBroken;
+
+                const tbody = document.getElementById('search-results-body');
+                if (countTotal === 0) {
+                    tbody.innerHTML = `<tr><td colspan="4" class="text-center p-4 text-slate-400">No matching results found</td></tr>`;
+                } else {
+                    tbody.innerHTML = results.map(item => {
+                        let statusTxt = "";
+                        let statusColor = "";
+                        if (item.condition === 'broken') { statusTxt = "Broken"; statusColor = "text-red-600 font-bold"; }
+                        else if (item.usage === 'inStock') { statusTxt = "In Stock"; statusColor = "text-blue-600 font-bold"; }
+                        else { statusTxt = "In Use"; statusColor = "text-emerald-600 font-bold"; }
+                        return `
+                        <tr class="hover:bg-slate-50">
+                            <td class="p-3">${item.name}</td>
+                            <td class="p-3 font-mono text-xs text-slate-500">${item.serial}</td>
+                            <td class="p-3 text-slate-600">${item.location}</td>
+                            <td class="p-3 ${statusColor}">${statusTxt}</td>
+                        </tr>`;
+                    }).join('');
+                }
+
+                this.openModal('search-results-modal');
+            },
+
+            // --- UTILITIES ---
+            animateNumber(id, endValue) {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.innerText = endValue;
+            },
+            openModal(id) { document.getElementById(id).classList.add('visible'); },
+            closeModal(id) { document.getElementById(id).classList.remove('visible'); },
+            playTone(type) {
+                if (typeof Tone === 'undefined') return;
+                if (Tone.context.state !== 'running') Tone.context.resume().catch(() => {});
+                const synth = new Tone.Synth().toDestination();
+                if (type === 'success') {
+                    synth.triggerAttackRelease("E5", "8n");
+                    setTimeout(() => synth.triggerAttackRelease("A5", "8n"), 100);
+                }
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => App.init());
+        window.App = App;
+    </script>
+</body>
+</html>
