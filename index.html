@@ -1,6 +1,8 @@
 <html lang="en" dir="ltr"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Tone.js for audio synthesis -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Font Awesome Icons -->
@@ -44,6 +46,31 @@
         }
         .modal-backdrop.visible .modal-content { transform: scale(1); }
 
+        /* Login Overlay Styles */
+        #login-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(255, 255, 255, 0.3); /* Slight white tint */
+            backdrop-filter: blur(15px); /* Strong blur effect */
+            -webkit-backdrop-filter: blur(15px); /* Safari support */
+            z-index: 10000; /* Highest z-index */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .login-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
         /* Print styles */
         @media print {
             body > *:not(#printable-content) { display: none !important; }
@@ -56,8 +83,36 @@
             #printable-content .stats-box { display: flex; justify-content: space-around; margin-bottom: 20px; border: 1px solid #ccc; padding: 10px; }
         }
     </style>
-<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.right-0{right:0px}.top-0{top:0px}.z-10{z-index:10}.z-20{z-index:20}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mt-0\.5{margin-top:0.125rem}.mt-1{margin-top:0.25rem}.mt-4{margin-top:1rem}.mt-8{margin-top:2rem}.block{display:block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-20{height:5rem}.h-full{height:100%}.h-screen{height:100vh}.w-16{width:4rem}.w-full{width:100%}.max-w-7xl{max-width:80rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.flex-grow{flex-grow:1}.cursor-pointer{cursor:pointer}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.divide-y > :not([hidden]) ~ :not([hidden]){--tw-divide-y-reverse:0;border-top-width:calc(1px * calc(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px * var(--tw-divide-y-reverse))}.divide-slate-100 > :not([hidden]) ~ :not([hidden]){--tw-divide-opacity:1;border-color:rgb(241 245 249 / var(--tw-divide-opacity, 1))}.overflow-auto{overflow:auto}.overflow-hidden{overflow:hidden}.whitespace-nowrap{white-space:nowrap}.rounded{border-radius:0.25rem}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.rounded-full{border-radius:9999px}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-b-4{border-bottom-width:4px}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-emerald-500{--tw-border-opacity:1;border-color:rgb(16 185 129 / var(--tw-border-opacity, 1))}.border-red-500{--tw-border-opacity:1;border-color:rgb(239 68 68 / var(--tw-border-opacity, 1))}.border-slate-100{--tw-border-opacity:1;border-color:rgb(241 245 249 / var(--tw-border-opacity, 1))}.border-slate-200{--tw-border-opacity:1;border-color:rgb(226 232 240 / var(--tw-border-opacity, 1))}.border-slate-300{--tw-border-opacity:1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1))}.border-slate-50{--tw-border-opacity:1;border-color:rgb(248 250 252 / var(--tw-border-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.bg-green-600{--tw-bg-opacity:1;background-color:rgb(22 163 74 / var(--tw-bg-opacity, 1))}.bg-indigo-600{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.bg-slate-100{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.bg-slate-200{--tw-bg-opacity:1;background-color:rgb(226 232 240 / var(--tw-bg-opacity, 1))}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-emerald-100{--tw-bg-opacity:1;background-color:rgb(209 250 229 / var(--tw-bg-opacity, 1))}.bg-red-100{--tw-bg-opacity:1;background-color:rgb(254 226 226 / var(--tw-bg-opacity, 1))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.from-blue-500{--tw-gradient-from:#3b82f6 var(--tw-gradient-from-position);--tw-gradient-to:rgb(59 130 246 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-emerald-500{--tw-gradient-from:#10b981 var(--tw-gradient-from-position);--tw-gradient-to:rgb(16 185 129 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-red-500{--tw-gradient-from:#ef4444 var(--tw-gradient-from-position);--tw-gradient-to:rgb(239 68 68 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-blue-700{--tw-gradient-to:#1d4ed8 var(--tw-gradient-to-position)}.to-emerald-700{--tw-gradient-to:#047857 var(--tw-gradient-to-position)}.to-red-700{--tw-gradient-to:#b91c1c var(--tw-gradient-to-position)}.p-1{padding:0.25rem}.p-2{padding:0.5rem}.p-2\.5{padding:0.625rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.pb-3{padding-bottom:0.75rem}.text-left{text-align:left}.text-center{text-align:center}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[10px\]{font-size:10px}.text-\[8px\]{font-size:8px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.leading-tight{line-height:1.25}.tracking-tight{letter-spacing:-0.025em}.tracking-wider{letter-spacing:0.05em}.tracking-widest{letter-spacing:0.1em}.text-blue-100{--tw-text-opacity:1;color:rgb(219 234 254 / var(--tw-text-opacity, 1))}.text-blue-600{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity, 1))}.text-blue-700{--tw-text-opacity:1;color:rgb(29 78 216 / var(--tw-text-opacity, 1))}.text-emerald-100{--tw-text-opacity:1;color:rgb(209 250 229 / var(--tw-text-opacity, 1))}.text-emerald-600{--tw-text-opacity:1;color:rgb(5 150 105 / var(--tw-text-opacity, 1))}.text-red-100{--tw-text-opacity:1;color:rgb(254 226 226 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-600{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.text-slate-700{--tw-text-opacity:1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.text-slate-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-emerald-700{--tw-text-opacity:1;color:rgb(4 120 87 / var(--tw-text-opacity, 1))}.text-red-700{--tw-text-opacity:1;color:rgb(185 28 28 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.opacity-20{opacity:0.2}.shadow{--tw-shadow:0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:-translate-y-1:hover{--tw-translate-y:-0.25rem;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.hover\:bg-blue-700:hover{--tw-bg-opacity:1;background-color:rgb(29 78 216 / var(--tw-bg-opacity, 1))}.hover\:bg-green-700:hover{--tw-bg-opacity:1;background-color:rgb(21 128 61 / var(--tw-bg-opacity, 1))}.hover\:bg-indigo-700:hover{--tw-bg-opacity:1;background-color:rgb(67 56 202 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-200:hover{--tw-bg-opacity:1;background-color:rgb(226 232 240 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-300:hover{--tw-bg-opacity:1;background-color:rgb(203 213 225 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-50:hover{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.hover\:text-red-500:hover{--tw-text-opacity:1;color:rgb(239 68 68 / var(--tw-text-opacity, 1))}.hover\:text-blue-500:hover{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.hover\:shadow-lg:hover{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-blue-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(59 130 246 / var(--tw-ring-opacity, 1))}@media (min-width: 768px){.md\:mt-1{margin-top:0.25rem}.md\:h-24{height:6rem}.md\:w-1\/2{width:50%}.md\:w-auto{width:auto}.md\:flex-initial{flex:0 1 auto}.md\:flex-row{flex-direction:row}.md\:gap-6{gap:1.5rem}.md\:space-y-6 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem * var(--tw-space-y-reverse))}.md\:rounded-xl{border-radius:0.75rem}.md\:p-3{padding:0.75rem}.md\:p-4{padding:1rem}.md\:p-6{padding:1.5rem}.md\:px-6{padding-left:1.5rem;padding-right:1.5rem}.md\:py-4{padding-top:1rem;padding-bottom:1rem}.md\:px-3{padding-left:0.75rem;padding-right:0.75rem}.md\:text-3xl{font-size:1.875rem;line-height:2.25rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-\[10px\]{font-size:10px}.md\:text-base{font-size:1rem;line-height:1.5rem}.md\:text-sm{font-size:0.875rem;line-height:1.25rem}.md\:text-xs{font-size:0.75rem;line-height:1rem}}</style><style>.action-column { display: none !important; }</style></head>
+<style>*, ::before, ::after{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }::backdrop{--tw-border-spacing-x:0;--tw-border-spacing-y:0;--tw-translate-x:0;--tw-translate-y:0;--tw-rotate:0;--tw-skew-x:0;--tw-skew-y:0;--tw-scale-x:1;--tw-scale-y:1;--tw-pan-x: ;--tw-pan-y: ;--tw-pinch-zoom: ;--tw-scroll-snap-strictness:proximity;--tw-gradient-from-position: ;--tw-gradient-via-position: ;--tw-gradient-to-position: ;--tw-ordinal: ;--tw-slashed-zero: ;--tw-numeric-figure: ;--tw-numeric-spacing: ;--tw-numeric-fraction: ;--tw-ring-inset: ;--tw-ring-offset-width:0px;--tw-ring-offset-color:#fff;--tw-ring-color:rgb(59 130 246 / 0.5);--tw-ring-offset-shadow:0 0 #0000;--tw-ring-shadow:0 0 #0000;--tw-shadow:0 0 #0000;--tw-shadow-colored:0 0 #0000;--tw-blur: ;--tw-brightness: ;--tw-contrast: ;--tw-grayscale: ;--tw-hue-rotate: ;--tw-invert: ;--tw-saturate: ;--tw-sepia: ;--tw-drop-shadow: ;--tw-backdrop-blur: ;--tw-backdrop-brightness: ;--tw-backdrop-contrast: ;--tw-backdrop-grayscale: ;--tw-backdrop-hue-rotate: ;--tw-backdrop-invert: ;--tw-backdrop-opacity: ;--tw-backdrop-saturate: ;--tw-backdrop-sepia: ;--tw-contain-size: ;--tw-contain-layout: ;--tw-contain-paint: ;--tw-contain-style: }/* ! tailwindcss v3.4.17 | MIT License | https://tailwindcss.com */*,::after,::before{box-sizing:border-box;border-width:0;border-style:solid;border-color:#e5e7eb}::after,::before{--tw-content:''}:host,html{line-height:1.5;-webkit-text-size-adjust:100%;-moz-tab-size:4;tab-size:4;font-family:ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";font-feature-settings:normal;font-variation-settings:normal;-webkit-tap-highlight-color:transparent}body{margin:0;line-height:inherit}hr{height:0;color:inherit;border-top-width:1px}abbr:where([title]){-webkit-text-decoration:underline dotted;text-decoration:underline dotted}h1,h2,h3,h4,h5,h6{font-size:inherit;font-weight:inherit}a{color:inherit;text-decoration:inherit}b,strong{font-weight:bolder}code,kbd,pre,samp{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;font-feature-settings:normal;font-variation-settings:normal;font-size:1em}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}table{text-indent:0;border-color:inherit;border-collapse:collapse}button,input,optgroup,select,textarea{font-family:inherit;font-feature-settings:inherit;font-variation-settings:inherit;font-size:100%;font-weight:inherit;line-height:inherit;letter-spacing:inherit;color:inherit;margin:0;padding:0}button,select{text-transform:none}button,input:where([type=button]),input:where([type=reset]),input:where([type=submit]){-webkit-appearance:button;background-color:transparent;background-image:none}:-moz-focusring{outline:auto}:-moz-ui-invalid{box-shadow:none}progress{vertical-align:baseline}::-webkit-inner-spin-button,::-webkit-outer-spin-button{height:auto}[type=search]{-webkit-appearance:textfield;outline-offset:-2px}::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}summary{display:list-item}blockquote,dd,dl,figure,h1,h2,h3,h4,h5,h6,hr,p,pre{margin:0}fieldset{margin:0;padding:0}legend{padding:0}menu,ol,ul{list-style:none;margin:0;padding:0}dialog{padding:0}textarea{resize:vertical}input::placeholder,textarea::placeholder{opacity:1;color:#9ca3af}[role=button],button{cursor:pointer}:disabled{cursor:default}audio,canvas,embed,iframe,img,object,svg,video{display:block;vertical-align:middle}img,video{max-width:100%;height:auto}[hidden]:where(:not([hidden=until-found])){display:none}.visible{visibility:visible}.absolute{position:absolute}.relative{position:relative}.sticky{position:sticky}.right-0{right:0px}.top-0{top:0px}.z-10{z-index:10}.z-20{z-index:20}.z-50{z-index:50}.mx-auto{margin-left:auto;margin-right:auto}.mb-1{margin-bottom:0.25rem}.mb-2{margin-bottom:0.5rem}.mb-3{margin-bottom:0.75rem}.mb-4{margin-bottom:1rem}.mb-6{margin-bottom:1.5rem}.mt-0\.5{margin-top:0.125rem}.mt-1{margin-top:0.25rem}.mt-2{margin-top:0.5rem}.mt-4{margin-top:1rem}.mt-8{margin-top:2rem}.block{display:block}.flex{display:flex}.grid{display:grid}.hidden{display:none}.h-16{height:4rem}.h-20{height:5rem}.h-full{height:100%}.h-screen{height:100vh}.w-16{width:4rem}.w-full{width:100%}.max-w-7xl{max-width:80rem}.flex-1{flex:1 1 0%}.shrink-0{flex-shrink:0}.flex-grow{flex-grow:1}.cursor-pointer{cursor:pointer}.select-all{-webkit-user-select:all;user-select:all}.grid-cols-2{grid-template-columns:repeat(2, minmax(0, 1fr))}.grid-cols-3{grid-template-columns:repeat(3, minmax(0, 1fr))}.grid-cols-4{grid-template-columns:repeat(4, minmax(0, 1fr))}.flex-col{flex-direction:column}.items-center{align-items:center}.justify-end{justify-content:flex-end}.justify-center{justify-content:center}.justify-between{justify-content:space-between}.gap-2{gap:0.5rem}.gap-3{gap:0.75rem}.gap-4{gap:1rem}.space-y-3 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(0.75rem * var(--tw-space-y-reverse))}.space-y-4 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1rem * var(--tw-space-y-reverse))}.divide-y > :not([hidden]) ~ :not([hidden]){--tw-divide-y-reverse:0;border-top-width:calc(1px * calc(1 - var(--tw-divide-y-reverse)));border-bottom-width:calc(1px * var(--tw-divide-y-reverse))}.divide-slate-100 > :not([hidden]) ~ :not([hidden]){--tw-divide-opacity:1;border-color:rgb(241 245 249 / var(--tw-divide-opacity, 1))}.overflow-auto{overflow:auto}.overflow-hidden{overflow:hidden}.whitespace-nowrap{white-space:nowrap}.rounded{border-radius:0.25rem}.rounded-full{border-radius:9999px}.rounded-lg{border-radius:0.5rem}.rounded-xl{border-radius:0.75rem}.border{border-width:1px}.border-b{border-bottom-width:1px}.border-b-4{border-bottom-width:4px}.border-t{border-top-width:1px}.border-blue-500{--tw-border-opacity:1;border-color:rgb(59 130 246 / var(--tw-border-opacity, 1))}.border-emerald-500{--tw-border-opacity:1;border-color:rgb(16 185 129 / var(--tw-border-opacity, 1))}.border-red-100{--tw-border-opacity:1;border-color:rgb(254 226 226 / var(--tw-border-opacity, 1))}.border-red-500{--tw-border-opacity:1;border-color:rgb(239 68 68 / var(--tw-border-opacity, 1))}.border-slate-100{--tw-border-opacity:1;border-color:rgb(241 245 249 / var(--tw-border-opacity, 1))}.border-slate-200{--tw-border-opacity:1;border-color:rgb(226 232 240 / var(--tw-border-opacity, 1))}.border-slate-300{--tw-border-opacity:1;border-color:rgb(203 213 225 / var(--tw-border-opacity, 1))}.border-slate-50{--tw-border-opacity:1;border-color:rgb(248 250 252 / var(--tw-border-opacity, 1))}.bg-blue-100{--tw-bg-opacity:1;background-color:rgb(219 234 254 / var(--tw-bg-opacity, 1))}.bg-blue-50{--tw-bg-opacity:1;background-color:rgb(239 246 255 / var(--tw-bg-opacity, 1))}.bg-blue-600{--tw-bg-opacity:1;background-color:rgb(37 99 235 / var(--tw-bg-opacity, 1))}.bg-green-600{--tw-bg-opacity:1;background-color:rgb(22 163 74 / var(--tw-bg-opacity, 1))}.bg-indigo-600{--tw-bg-opacity:1;background-color:rgb(79 70 229 / var(--tw-bg-opacity, 1))}.bg-red-50{--tw-bg-opacity:1;background-color:rgb(254 242 242 / var(--tw-bg-opacity, 1))}.bg-red-600{--tw-bg-opacity:1;background-color:rgb(220 38 38 / var(--tw-bg-opacity, 1))}.bg-slate-100{--tw-bg-opacity:1;background-color:rgb(241 245 249 / var(--tw-bg-opacity, 1))}.bg-slate-200{--tw-bg-opacity:1;background-color:rgb(226 232 240 / var(--tw-bg-opacity, 1))}.bg-slate-50{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.bg-teal-600{--tw-bg-opacity:1;background-color:rgb(13 148 136 / var(--tw-bg-opacity, 1))}.bg-white{--tw-bg-opacity:1;background-color:rgb(255 255 255 / var(--tw-bg-opacity, 1))}.bg-emerald-100{--tw-bg-opacity:1;background-color:rgb(209 250 229 / var(--tw-bg-opacity, 1))}.bg-red-100{--tw-bg-opacity:1;background-color:rgb(254 226 226 / var(--tw-bg-opacity, 1))}.bg-gradient-to-br{background-image:linear-gradient(to bottom right, var(--tw-gradient-stops))}.from-blue-500{--tw-gradient-from:#3b82f6 var(--tw-gradient-from-position);--tw-gradient-to:rgb(59 130 246 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-emerald-500{--tw-gradient-from:#10b981 var(--tw-gradient-from-position);--tw-gradient-to:rgb(16 185 129 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.from-red-500{--tw-gradient-from:#ef4444 var(--tw-gradient-from-position);--tw-gradient-to:rgb(239 68 68 / 0) var(--tw-gradient-to-position);--tw-gradient-stops:var(--tw-gradient-from), var(--tw-gradient-to)}.to-blue-700{--tw-gradient-to:#1d4ed8 var(--tw-gradient-to-position)}.to-emerald-700{--tw-gradient-to:#047857 var(--tw-gradient-to-position)}.to-red-700{--tw-gradient-to:#b91c1c var(--tw-gradient-to-position)}.p-1{padding:0.25rem}.p-2{padding:0.5rem}.p-2\.5{padding:0.625rem}.p-3{padding:0.75rem}.p-4{padding:1rem}.px-2{padding-left:0.5rem;padding-right:0.5rem}.px-4{padding-left:1rem;padding-right:1rem}.px-6{padding-left:1.5rem;padding-right:1.5rem}.py-1{padding-top:0.25rem;padding-bottom:0.25rem}.py-2{padding-top:0.5rem;padding-bottom:0.5rem}.py-2\.5{padding-top:0.625rem;padding-bottom:0.625rem}.py-3{padding-top:0.75rem;padding-bottom:0.75rem}.pb-3{padding-bottom:0.75rem}.text-left{text-align:left}.text-center{text-align:center}.font-mono{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}.text-2xl{font-size:1.5rem;line-height:2rem}.text-3xl{font-size:1.875rem;line-height:2.25rem}.text-\[10px\]{font-size:10px}.text-\[8px\]{font-size:8px}.text-lg{font-size:1.125rem;line-height:1.75rem}.text-sm{font-size:0.875rem;line-height:1.25rem}.text-xl{font-size:1.25rem;line-height:1.75rem}.text-xs{font-size:0.75rem;line-height:1rem}.font-bold{font-weight:700}.font-medium{font-weight:500}.font-semibold{font-weight:600}.uppercase{text-transform:uppercase}.leading-tight{line-height:1.25}.tracking-tight{letter-spacing:-0.025em}.tracking-wider{letter-spacing:0.05em}.tracking-widest{letter-spacing:0.1em}.text-blue-100{--tw-text-opacity:1;color:rgb(219 234 254 / var(--tw-text-opacity, 1))}.text-blue-600{--tw-text-opacity:1;color:rgb(37 99 235 / var(--tw-text-opacity, 1))}.text-blue-700{--tw-text-opacity:1;color:rgb(29 78 216 / var(--tw-text-opacity, 1))}.text-emerald-100{--tw-text-opacity:1;color:rgb(209 250 229 / var(--tw-text-opacity, 1))}.text-emerald-600{--tw-text-opacity:1;color:rgb(5 150 105 / var(--tw-text-opacity, 1))}.text-indigo-200{--tw-text-opacity:1;color:rgb(199 210 254 / var(--tw-text-opacity, 1))}.text-red-100{--tw-text-opacity:1;color:rgb(254 226 226 / var(--tw-text-opacity, 1))}.text-red-200{--tw-text-opacity:1;color:rgb(254 202 202 / var(--tw-text-opacity, 1))}.text-red-500{--tw-text-opacity:1;color:rgb(239 68 68 / var(--tw-text-opacity, 1))}.text-red-600{--tw-text-opacity:1;color:rgb(220 38 38 / var(--tw-text-opacity, 1))}.text-slate-400{--tw-text-opacity:1;color:rgb(148 163 184 / var(--tw-text-opacity, 1))}.text-slate-500{--tw-text-opacity:1;color:rgb(100 116 139 / var(--tw-text-opacity, 1))}.text-slate-600{--tw-text-opacity:1;color:rgb(71 85 105 / var(--tw-text-opacity, 1))}.text-slate-700{--tw-text-opacity:1;color:rgb(51 65 85 / var(--tw-text-opacity, 1))}.text-slate-800{--tw-text-opacity:1;color:rgb(30 41 59 / var(--tw-text-opacity, 1))}.text-teal-200{--tw-text-opacity:1;color:rgb(153 246 228 / var(--tw-text-opacity, 1))}.text-white{--tw-text-opacity:1;color:rgb(255 255 255 / var(--tw-text-opacity, 1))}.text-emerald-700{--tw-text-opacity:1;color:rgb(4 120 87 / var(--tw-text-opacity, 1))}.text-red-700{--tw-text-opacity:1;color:rgb(185 28 28 / var(--tw-text-opacity, 1))}.text-slate-300{--tw-text-opacity:1;color:rgb(203 213 225 / var(--tw-text-opacity, 1))}.opacity-20{opacity:0.2}.opacity-80{opacity:0.8}.shadow{--tw-shadow:0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-md{--tw-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 4px 6px -1px var(--tw-shadow-color), 0 2px 4px -2px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.shadow-sm{--tw-shadow:0 1px 2px 0 rgb(0 0 0 / 0.05);--tw-shadow-colored:0 1px 2px 0 var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.outline-none{outline:2px solid transparent;outline-offset:2px}.transition{transition-property:color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;transition-property:color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.transition-transform{transition-property:transform;transition-timing-function:cubic-bezier(0.4, 0, 0.2, 1);transition-duration:150ms}.hover\:-translate-y-1:hover{--tw-translate-y:-0.25rem;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}.hover\:bg-blue-700:hover{--tw-bg-opacity:1;background-color:rgb(29 78 216 / var(--tw-bg-opacity, 1))}.hover\:bg-green-700:hover{--tw-bg-opacity:1;background-color:rgb(21 128 61 / var(--tw-bg-opacity, 1))}.hover\:bg-indigo-700:hover{--tw-bg-opacity:1;background-color:rgb(67 56 202 / var(--tw-bg-opacity, 1))}.hover\:bg-red-700:hover{--tw-bg-opacity:1;background-color:rgb(185 28 28 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-200:hover{--tw-bg-opacity:1;background-color:rgb(226 232 240 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-300:hover{--tw-bg-opacity:1;background-color:rgb(203 213 225 / var(--tw-bg-opacity, 1))}.hover\:bg-teal-700:hover{--tw-bg-opacity:1;background-color:rgb(15 118 110 / var(--tw-bg-opacity, 1))}.hover\:bg-slate-50:hover{--tw-bg-opacity:1;background-color:rgb(248 250 252 / var(--tw-bg-opacity, 1))}.hover\:text-red-500:hover{--tw-text-opacity:1;color:rgb(239 68 68 / var(--tw-text-opacity, 1))}.hover\:text-blue-500:hover{--tw-text-opacity:1;color:rgb(59 130 246 / var(--tw-text-opacity, 1))}.hover\:shadow-lg:hover{--tw-shadow:0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);--tw-shadow-colored:0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);box-shadow:var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow)}.focus\:ring-2:focus{--tw-ring-offset-shadow:var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);--tw-ring-shadow:var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);box-shadow:var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000)}.focus\:ring-blue-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(59 130 246 / var(--tw-ring-opacity, 1))}.focus\:ring-red-500:focus{--tw-ring-opacity:1;--tw-ring-color:rgb(239 68 68 / var(--tw-ring-opacity, 1))}.group:hover .group-hover\:scale-110{--tw-scale-x:1.1;--tw-scale-y:1.1;transform:translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))}@media (min-width: 768px){.md\:mt-1{margin-top:0.25rem}.md\:h-24{height:6rem}.md\:w-1\/2{width:50%}.md\:w-auto{width:auto}.md\:flex-initial{flex:0 1 auto}.md\:flex-row{flex-direction:row}.md\:gap-6{gap:1.5rem}.md\:space-y-6 > :not([hidden]) ~ :not([hidden]){--tw-space-y-reverse:0;margin-top:calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));margin-bottom:calc(1.5rem * var(--tw-space-y-reverse))}.md\:rounded-xl{border-radius:0.75rem}.md\:p-3{padding:0.75rem}.md\:p-4{padding:1rem}.md\:p-6{padding:1.5rem}.md\:px-6{padding-left:1.5rem;padding-right:1.5rem}.md\:py-4{padding-top:1rem;padding-bottom:1rem}.md\:px-3{padding-left:0.75rem;padding-right:0.75rem}.md\:text-3xl{font-size:1.875rem;line-height:2.25rem}.md\:text-5xl{font-size:3rem;line-height:1}.md\:text-\[10px\]{font-size:10px}.md\:text-base{font-size:1rem;line-height:1.5rem}.md\:text-sm{font-size:0.875rem;line-height:1.25rem}.md\:text-xs{font-size:0.75rem;line-height:1rem}}</style><style>.action-column { display: none !important; }</style></head>
 <body class="h-screen flex flex-col overflow-hidden text-slate-800">
+
+    <!-- LOGIN SCREEN OVERLAY -->
+    <div id="login-overlay" style="">
+        <div class="login-card">
+            <div class="mb-6">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4 text-blue-600 text-2xl">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-slate-800 tracking-tight">Dasco <span class="text-blue-600">Asset</span></h1>
+                <p class="text-sm text-slate-500 mt-2">Secure Login</p>
+            </div>
+            
+            <div class="space-y-4 text-left">
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Username</label>
+                    <input type="text" id="login-username" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Enter username">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-slate-700 mb-1">Password</label>
+                    <input type="password" id="login-password" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition" placeholder="Enter password">
+                </div>
+                <button onclick="App.attemptLogin()" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition shadow-md mt-2 flex justify-center items-center gap-2">
+                    <span>Sign In</span> <i class="fas fa-arrow-right"></i>
+                </button>
+                <p id="login-error" class="text-red-500 text-sm text-center hidden font-medium bg-red-50 p-2 rounded border border-red-100">Invalid Credentials</p>
+            </div>
+        </div>
+    </div>
 
     <!-- Top Header -->
     <header class="bg-white border-b border-slate-200 px-4 py-3 md:px-6 md:py-4 flex flex-col justify-center items-center shrink-0 shadow-sm relative z-20">
@@ -133,16 +188,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 31</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769337029835)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769337029835)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -151,16 +197,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 31</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336999497)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336999497)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -169,16 +206,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 31</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336980789)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336980789)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -187,16 +215,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 31</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336883188)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336883188)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -205,16 +224,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">R 31-CH1</td>
                         <td class="p-3 text-slate-600">Rig 31</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336648615)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336648615)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -223,16 +233,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">K03220016D</td>
                         <td class="p-3 text-slate-600">Rig 31</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336618273)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336618273)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -241,16 +242,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">K02220103C</td>
                         <td class="p-3 text-slate-600">Rig 31</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336594572)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336594572)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -259,16 +251,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">228-8(KR9603)</td>
                         <td class="p-3 text-slate-600">Rig 31</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336536828)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336536828)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -277,16 +260,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">KY01220070</td>
                         <td class="p-3 text-slate-600">Rig 2</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336486634)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336486634)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -295,16 +269,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 2</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336455051)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336455051)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -313,16 +278,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">SK18250</td>
                         <td class="p-3 text-slate-600">Rig 2</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336428303)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336428303)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -331,16 +287,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">K02190212C</td>
                         <td class="p-3 text-slate-600">Rig 2</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336397679)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336397679)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -349,16 +296,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 2</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336335116)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336335116)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -367,16 +305,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 2</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336311937)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336311937)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -385,16 +314,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 2</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336290553)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336290553)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -403,16 +323,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">11825-H</td>
                         <td class="p-3 text-slate-600">Rig 2</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336243587)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336243587)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -421,16 +332,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 2</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336198035)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336198035)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -439,16 +341,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Yard</td>
                         <td class="p-3"><span class="bg-red-100 text-red-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-times-circle"></i> Repair</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336104556)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336104556)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -457,16 +350,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Yard</td>
                         <td class="p-3"><span class="bg-red-100 text-red-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-times-circle"></i> Repair</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336086381)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336086381)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -475,16 +359,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Yard</td>
                         <td class="p-3"><span class="bg-red-100 text-red-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-times-circle"></i> Repair</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336069944)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336069944)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -493,16 +368,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Yard</td>
                         <td class="p-3"><span class="bg-red-100 text-red-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-times-circle"></i> Repair</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769336047009)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769336047009)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -511,16 +377,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 1</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335974830)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335974830)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -529,16 +386,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 1</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335953839)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335953839)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -547,16 +395,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 1</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335927335)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335927335)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -565,16 +404,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 9</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335882273)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335882273)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -583,16 +413,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 9</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335867898)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335867898)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -601,16 +422,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 27</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335731585)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335731585)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -619,16 +431,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 27</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335588390)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335588390)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -637,16 +440,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 12</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335525478)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335525478)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -655,16 +449,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 12</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335497521)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335497521)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -673,16 +458,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 12</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335467928)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335467928)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -691,16 +467,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 27</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335397476)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335397476)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -709,16 +476,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 30</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335362947)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335362947)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -727,16 +485,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 52</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335332992)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335332992)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -745,16 +494,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 52</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335311163)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335311163)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -763,16 +503,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">19-23</td>
                         <td class="p-3 text-slate-600">Rig 52</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335212833)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335212833)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -781,16 +512,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">200428</td>
                         <td class="p-3 text-slate-600">Rig 52</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335194226)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335194226)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -799,16 +521,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">RS1214500A</td>
                         <td class="p-3 text-slate-600">Rig 52</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335171430)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335171430)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -817,16 +530,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">K02190215C</td>
                         <td class="p-3 text-slate-600">Rig 52</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335140085)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335140085)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -835,16 +539,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">TWM01324</td>
                         <td class="p-3 text-slate-600">Rig 52</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335076428)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335076428)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -853,16 +548,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">12260</td>
                         <td class="p-3 text-slate-600">Rig 52</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769335023803)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769335023803)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -871,16 +557,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">19-23</td>
                         <td class="p-3 text-slate-600">Rig 30</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769334947461)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769334947461)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -889,16 +566,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">200428</td>
                         <td class="p-3 text-slate-600">Rig 30</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769334926006)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769334926006)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -907,16 +575,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">RS1214500A</td>
                         <td class="p-3 text-slate-600">Rig 30</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769334898989)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769334898989)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -925,16 +584,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">K02190215C</td>
                         <td class="p-3 text-slate-600">Rig 30</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769334869334)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769334869334)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -943,16 +593,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">LLE00491</td>
                         <td class="p-3 text-slate-600">Rig 30</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769334788098)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769334788098)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -961,16 +602,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">17002</td>
                         <td class="p-3 text-slate-600">Rig 30</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769334601683)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769334601683)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -979,16 +611,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">18-20</td>
                         <td class="p-3 text-slate-600">Rig 1</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769334544508)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769334544508)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -997,16 +620,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">182600</td>
                         <td class="p-3 text-slate-600">Rig 1</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769334504639)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769334504639)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1015,16 +629,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 1</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769333610738)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769333610738)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1033,16 +638,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 1</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769333587369)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769333587369)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1051,16 +647,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">TWM01319</td>
                         <td class="p-3 text-slate-600">Rig 1</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769332315775)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769332315775)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1069,16 +656,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">17005</td>
                         <td class="p-3 text-slate-600">Rig 1</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769332272052)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769332272052)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1087,16 +665,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">16-22</td>
                         <td class="p-3 text-slate-600">Rig 9</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769331648215)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769331648215)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1105,16 +674,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">30260</td>
                         <td class="p-3 text-slate-600">Rig 9</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769331624063)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769331624063)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1123,16 +683,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">K03220014D</td>
                         <td class="p-3 text-slate-600">Rig 9</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769331531629)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769331531629)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1141,16 +692,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">K02190216C</td>
                         <td class="p-3 text-slate-600">Rig 9</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769331500397)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769331500397)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1159,16 +701,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">264-4644</td>
                         <td class="p-3 text-slate-600">Rig 9</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769331449978)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769331449978)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1177,16 +710,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">N/A</td>
                         <td class="p-3 text-slate-600">Rig 9</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769331313268)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769331313268)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1195,16 +719,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">FKQ-480-5</td>
                         <td class="p-3 text-slate-600">Rig 12</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769331233190)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769331233190)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1213,16 +728,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">4170</td>
                         <td class="p-3 text-slate-600">Rig 12</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769331157452)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769331157452)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1231,16 +737,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">K03220016D</td>
                         <td class="p-3 text-slate-600">Rig 12</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769331121658)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769331121658)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1249,16 +746,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">K02220092C</td>
                         <td class="p-3 text-slate-600">Rig 12</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769331095533)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769331095533)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1267,16 +755,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">11824-H</td>
                         <td class="p-3 text-slate-600">Rig 12</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769331024168)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769331024168)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1285,16 +764,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">16043011F</td>
                         <td class="p-3 text-slate-600">Rig 12</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769330942165)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769330942165)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1303,16 +773,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">KY0122007Q</td>
                         <td class="p-3 text-slate-600">Rig 27</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769330809267)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769330809267)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1321,16 +782,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">222768</td>
                         <td class="p-3 text-slate-600">Rig 27</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769330781014)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769330781014)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1339,16 +791,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">K02220100C</td>
                         <td class="p-3 text-slate-600">Rig 27</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769330751447)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769330751447)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1357,16 +800,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">K03220015D</td>
                         <td class="p-3 text-slate-600">Rig 27</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769330704196)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769330704196)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1375,16 +809,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">LLE00493</td>
                         <td class="p-3 text-slate-600">Rig 27</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769330644162)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769330644162)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 
                     <tr class="hover:bg-slate-50 transition border-b border-slate-50 group">
@@ -1393,16 +818,7 @@
                         <td class="p-3 font-mono text-slate-500 text-[10px] md:text-xs">KERUI 950</td>
                         <td class="p-3 text-slate-600">Rig 27</td>
                         <td class="p-3"><span class="bg-emerald-100 text-emerald-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-check-circle"></i> In Use</span></td>
-                        <td class="p-3 text-center action-column">
-                            <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(1769330555380)" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(1769330555380)" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </td>
+                        
                     </tr>
                 </tbody>
                         </table>
@@ -1415,17 +831,71 @@
 
     <!-- ================= MODALS ================= -->
 
+    <!-- Backup Options Modal -->
+    <div id="backup-options-modal" class="modal-backdrop z-50">
+        <div class="modal-content" style="max-width: 450px;">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="text-xl font-bold text-slate-800">Data &amp; Backup</h3>
+                <button onclick="App.closeModal('backup-options-modal')" class="text-slate-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            
+            <div class="space-y-3">
+                <button onclick="App.exportData('full')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-xl flex items-center justify-between group transition shadow-sm">
+                    <div class="text-left">
+                        <div class="font-bold text-lg">Full System Copy</div>
+                        <div class="text-indigo-200 text-xs mt-1">Export everything (Data + Buttons).</div>
+                    </div>
+                    <i class="fas fa-save text-2xl group-hover:scale-110 transition opacity-80"></i>
+                </button>
+
+                <button onclick="App.exportData('view')" class="w-full bg-teal-600 hover:bg-teal-700 text-white p-4 rounded-xl flex items-center justify-between group transition shadow-sm">
+                    <div class="text-left">
+                        <div class="font-bold text-lg">View-Only Report</div>
+                        <div class="text-teal-200 text-xs mt-1">Export data only (No edit buttons).</div>
+                    </div>
+                    <i class="fas fa-eye text-2xl group-hover:scale-110 transition opacity-80"></i>
+                </button>
+
+                <!-- New Delete Option -->
+                <button onclick="App.openDeleteAllModal()" class="w-full bg-red-600 hover:bg-red-700 text-white p-4 rounded-xl flex items-center justify-between group transition shadow-sm border-t border-red-500 mt-2">
+                    <div class="text-left">
+                        <div class="font-bold text-lg">Clear All Data</div>
+                        <div class="text-red-200 text-xs mt-1">Permanently delete everything.</div>
+                    </div>
+                    <i class="fas fa-trash-alt text-2xl group-hover:scale-110 transition opacity-80"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-all-modal" class="modal-backdrop z-50">
+        <div class="modal-content" style="max-width: 400px;">
+            <div class="flex justify-between items-center border-b pb-3 mb-4">
+                <h3 class="text-xl font-bold text-red-600">Danger Zone</h3>
+                <button onclick="App.closeModal('delete-all-modal')" class="text-slate-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <div class="mb-4">
+                <p class="text-slate-600 text-sm mb-2">This action cannot be undone. All data will be lost.</p>
+                <p class="text-slate-700 text-sm font-medium mb-2">To confirm, type <span class="font-bold text-red-600 select-all">ahmed emam</span> below:</p>
+                <input type="text" id="delete-confirm-input" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-red-500 outline-none" placeholder="Type here...">
+            </div>
+            <div class="flex justify-end gap-2">
+                <button onclick="App.closeModal('delete-all-modal')" class="bg-slate-100 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-200 font-medium">Cancel</button>
+                <button onclick="App.confirmDeleteAll()" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 font-bold shadow-sm">Delete Everything</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Add/Edit Item Modal -->
     <div id="add-item-modal" class="modal-backdrop z-50">
         <div class="modal-content">
             <h3 id="modal-title" class="text-xl font-bold text-slate-800 mb-6 border-b pb-3">Add New Item</h3>
-            
             <div class="space-y-4">
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Item Name</label>
                     <input type="text" id="input-name" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. Generator 50KVA">
                 </div>
-                
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Serial Number</label>
@@ -1436,7 +906,6 @@
                         <input type="number" id="input-quantity" min="1" value="1" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="1">
                     </div>
                 </div>
-
                 <div class="grid grid-cols-2 gap-4">
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">Condition</label>
@@ -1445,7 +914,6 @@
                             <option value="broken">❌ Repair</option>
                         </select>
                     </div>
-                    
                     <div id="usage-field-container">
                         <label class="block text-sm font-medium text-slate-700 mb-1">Usage Status</label>
                         <select id="input-usage" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none bg-white">
@@ -1454,13 +922,11 @@
                         </select>
                     </div>
                 </div>
-
                 <div>
                     <label class="block text-sm font-medium text-slate-700 mb-1">Location</label>
                     <input type="text" id="input-location" class="w-full p-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none" placeholder="e.g. Rig 27 - Engine Room">
                 </div>
             </div>
-
             <div class="mt-8 flex justify-end gap-3">
                 <button onclick="App.closeModal('add-item-modal')" class="bg-slate-100 text-slate-700 px-6 py-2 rounded-lg hover:bg-slate-200 font-medium transition">Cancel</button>
                 <button id="modal-save-btn" onclick="App.saveItem()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 font-medium shadow transition">Save Item</button>
@@ -1475,7 +941,6 @@
                 <h3 class="text-xl font-bold text-slate-800">Search Analysis &amp; Results</h3>
                 <button onclick="App.closeModal('search-results-modal')" class="text-slate-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
             </div>
-
             <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4">
                 <h4 class="text-sm text-slate-500 mb-3">Analysis for: <span id="search-term-display" class="font-bold text-blue-700 text-lg">--</span></h4>
                 <div class="grid grid-cols-4 gap-3 text-center">
@@ -1497,7 +962,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="flex-grow overflow-auto border rounded-lg bg-white">
                 <table class="w-full text-sm text-left">
                     <thead class="bg-slate-100 text-slate-600 sticky top-0">
@@ -1509,12 +973,9 @@
                             <th class="p-3">Status</th>
                         </tr>
                     </thead>
-                    <tbody id="search-results-body" class="divide-y">
-                        <!-- Search Results Rows -->
-                    </tbody>
+                    <tbody id="search-results-body" class="divide-y"></tbody>
                 </table>
             </div>
-
             <div class="mt-4 flex justify-end gap-2">
                 <button onclick="App.closeModal('search-results-modal')" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-300">Close</button>
                 <button onclick="App.printSearchReport()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 font-bold flex items-center gap-2 shadow-sm">
@@ -1531,12 +992,10 @@
                 <h3 id="report-modal-title" class="text-xl font-bold text-slate-800">Category Report</h3>
                 <button onclick="App.closeModal('report-modal')" class="text-slate-400 hover:text-red-500"><i class="fas fa-times text-xl"></i></button>
             </div>
-            
             <div class="bg-blue-50 p-4 rounded-lg mb-4 text-sm text-blue-700 flex items-center gap-2">
                 <i class="fas fa-info-circle"></i>
                 <span>This list contains only items in this category.</span>
             </div>
-
             <div class="flex-grow overflow-auto border rounded-lg bg-white" id="report-table-container">
                 <table class="w-full text-sm text-left" id="report-table">
                     <thead class="bg-slate-100 text-slate-600 sticky top-0">
@@ -1548,12 +1007,9 @@
                             <th class="p-3">Date</th>
                         </tr>
                     </thead>
-                    <tbody id="report-body" class="divide-y">
-                        <!-- Rows rendered here -->
-                    </tbody>
+                    <tbody id="report-body" class="divide-y"></tbody>
                 </table>
             </div>
-
             <div class="mt-4 flex justify-end gap-2">
                 <button onclick="App.closeModal('report-modal')" class="bg-slate-200 text-slate-700 px-4 py-2 rounded-lg hover:bg-slate-300">Close</button>
                 <button onclick="App.printReport()" class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 font-bold flex items-center gap-2 shadow-sm">
@@ -1563,7 +1019,7 @@
         </div>
     </div>
 
-    <!-- Printable Area (Hidden on Screen) -->
+    <!-- Printable Area -->
     <div id="printable-content" class="hidden"></div>
 
     <script>
@@ -1577,12 +1033,34 @@
                 this.loadData();
                 this.bindEvents();
                 this.updateDashboard();
+                // Focus on login input on load
+                document.getElementById('login-username').focus();
+            },
+
+            // --- LOGIN LOGIC ---
+            attemptLogin() {
+                const u = document.getElementById('login-username').value;
+                const p = document.getElementById('login-password').value;
+                const overlay = document.getElementById('login-overlay');
+                const errorMsg = document.getElementById('login-error');
+
+                if (u === 'DASCO' && p === 'DASCO@123') {
+                    errorMsg.classList.add('hidden');
+                    overlay.style.opacity = '0';
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                    }, 500);
+                } else {
+                    errorMsg.classList.remove('hidden');
+                    // Shake effect
+                    const card = document.querySelector('.login-card');
+                    card.classList.add('animate-bounce');
+                    setTimeout(()=> card.classList.remove('animate-bounce'), 500);
+                }
             },
 
             loadData() {
-                // Try to get data from localStorage, otherwise initialize empty
                 const saved = '[{"id":1769330555380,"name":"Traveling block 150 ton","serial":"KERUI 950","quantity":1,"condition":"working","usage":"inUse","location":"Rig 27","date":"25/01/2026"},{"id":1769330644162,"name":"Mud pump","serial":"LLE00493","quantity":1,"condition":"working","usage":"inUse","location":"Rig 27","date":"25/01/2026"},{"id":1769330704196,"name":"Annular Rongsheng 11\\"","serial":"K03220015D","quantity":1,"condition":"working","usage":"inUse","location":"Rig 27","date":"25/01/2026"},{"id":1769330751447,"name":"Double ram Rong sheng 11\\"","serial":"K02220100C","quantity":1,"condition":"working","usage":"inUse","location":"Rig 27","date":"25/01/2026"},{"id":1769330781014,"name":"Choke manifold","serial":"222768","quantity":1,"condition":"working","usage":"inUse","location":"Rig 27","date":"25/01/2026"},{"id":1769330809267,"name":"Kommey unit","serial":"KY0122007Q","quantity":1,"condition":"working","usage":"inUse","location":"Rig 27","date":"25/01/2026"},{"id":1769330942165,"name":"Traveling block Ideco 160 ton","serial":"16043011F","quantity":1,"condition":"working","usage":"inUse","location":"Rig 12","date":"25/01/2026"},{"id":1769331024168,"name":"Mud pump National 9P-100","serial":"11824-H","quantity":1,"condition":"working","usage":"inUse","location":"Rig 12","date":"25/01/2026"},{"id":1769331095533,"name":"Double ram Rongsheng 11\\"","serial":"K02220092C","quantity":1,"condition":"working","usage":"inUse","location":"Rig 12","date":"25/01/2026"},{"id":1769331121658,"name":"Annular Rongsheng 11\\"","serial":"K03220016D","quantity":1,"condition":"working","usage":"inUse","location":"Rig 12","date":"25/01/2026"},{"id":1769331157452,"name":"Choke manifold Baxin","serial":"4170","quantity":1,"condition":"working","usage":"inUse","location":"Rig 12","date":"25/01/2026"},{"id":1769331233190,"name":"Kommey unit Shenkai","serial":"FKQ-480-5","quantity":1,"condition":"working","usage":"inUse","location":"Rig 12","date":"25/01/2026"},{"id":1769331313268,"name":"Traveling block Ideco 150 ton","serial":"N/A","quantity":1,"condition":"working","usage":"inUse","location":"Rig 9","date":"25/01/2026"},{"id":1769331449978,"name":"Mud pump National 9P-100","serial":"264-4644","quantity":1,"condition":"working","usage":"inUse","location":"Rig 9","date":"25/01/2026"},{"id":1769331500397,"name":"Double ram Rongsheng 11\\"","serial":"K02190216C","quantity":1,"condition":"working","usage":"inUse","location":"Rig 9","date":"25/01/2026"},{"id":1769331531629,"name":"Annular Shenkai 11\\"","serial":"K03220014D","quantity":1,"condition":"working","usage":"inUse","location":"Rig 9","date":"25/01/2026"},{"id":1769331624063,"name":"Choke manifold Baxin","serial":"30260","quantity":1,"condition":"working","usage":"inUse","location":"Rig 9","date":"25/01/2026"},{"id":1769331648215,"name":"Kommey unit Shenkai","serial":"16-22","quantity":1,"condition":"working","usage":"inUse","location":"Rig 9","date":"25/01/2026"},{"id":1769332272052,"name":"Traveling block Jiangsu 250 ton","serial":"17005","quantity":1,"condition":"working","usage":"inUse","location":"Rig 1","date":"25/01/2026"},{"id":1769332315775,"name":"Mud pump Eweco E-800","serial":"TWM01319","quantity":1,"condition":"working","usage":"inUse","location":"Rig 1","date":"25/01/2026"},{"id":1769333587369,"name":"Double ram rongsheng 11\\"","serial":"N/A","quantity":1,"condition":"working","usage":"inUse","location":"Rig 1","date":"25/01/2026"},{"id":1769333610738,"name":"Annular Shenkai 11\\"","serial":"N/A","quantity":1,"condition":"working","usage":"inUse","location":"Rig 1","date":"25/01/2026"},{"id":1769334504639,"name":"Choke manifold king dream","serial":"182600","quantity":1,"condition":"working","usage":"inUse","location":"Rig 1","date":"25/01/2026"},{"id":1769334544508,"name":"Kommey unit Shenkai","serial":"18-20","quantity":1,"condition":"working","usage":"inUse","location":"Rig 1","date":"25/01/2026"},{"id":1769334601683,"name":"Traveling block Ideco 150 ton","serial":"17002","quantity":1,"condition":"working","usage":"inUse","location":"Rig 30","date":"25/01/2026"},{"id":1769334788098,"name":"Mud pump Eweco E-800","serial":"LLE00491","quantity":1,"condition":"working","usage":"inUse","location":"Rig 30","date":"25/01/2026"},{"id":1769334869334,"name":"Double ram Rongsheng 11\\"","serial":"K02190215C","quantity":1,"condition":"working","usage":"inUse","location":"Rig 30","date":"25/01/2026"},{"id":1769334898989,"name":"Annular Rongsheng 11\\"","serial":"RS1214500A","quantity":1,"condition":"working","usage":"inUse","location":"Rig 30","date":"25/01/2026"},{"id":1769334926006,"name":"Choke manifold Baxin","serial":"200428","quantity":1,"condition":"working","usage":"inUse","location":"Rig 30","date":"25/01/2026"},{"id":1769334947461,"name":"Kommey unit Shenkai","serial":"19-23","quantity":1,"condition":"working","usage":"inUse","location":"Rig 30","date":"25/01/2026"},{"id":1769335023803,"name":"Traveling Skytop 250 ton","serial":"12260","quantity":1,"condition":"working","usage":"inUse","location":"Rig 52","date":"25/01/2026"},{"id":1769335076428,"name":"Mud pump Eweco E-800","serial":"TWM01324","quantity":1,"condition":"working","usage":"inUse","location":"Rig 52","date":"25/01/2026"},{"id":1769335140085,"name":"Double ram Rongsheng 11\\"","serial":"K02190215C","quantity":1,"condition":"working","usage":"inUse","location":"Rig 52","date":"25/01/2026"},{"id":1769335171430,"name":"Annular Rongsheng 11\\"","serial":"RS1214500A","quantity":1,"condition":"working","usage":"inUse","location":"Rig 52","date":"25/01/2026"},{"id":1769335194226,"name":"Choke manifold Baxin","serial":"200428","quantity":1,"condition":"working","usage":"inUse","location":"Rig 52","date":"25/01/2026"},{"id":1769335212833,"name":"Kommey unit Shenkai","serial":"19-23","quantity":1,"condition":"working","usage":"inUse","location":"Rig 52","date":"25/01/2026"},{"id":1769335311163,"name":"Drill pipe 3.5\\"","serial":"N/A","quantity":319,"condition":"working","usage":"inUse","location":"Rig 52","date":"25/01/2026"},{"id":1769335332992,"name":"Drill collar 4-3/4\\"","serial":"N/A","quantity":10,"condition":"working","usage":"inUse","location":"Rig 52","date":"25/01/2026"},{"id":1769335362947,"name":"Drill pipe 3.5\\"","serial":"N/A","quantity":70,"condition":"working","usage":"inUse","location":"Rig 30","date":"25/01/2026"},{"id":1769335397476,"name":"Drill collar 4-3/4\\"","serial":"N/A","quantity":11,"condition":"working","usage":"inUse","location":"Rig 27","date":"25/01/2026"},{"id":1769335467928,"name":"Drill collar 4-3/4\\"","serial":"N/A","quantity":10,"condition":"working","usage":"inUse","location":"Rig 12","date":"25/01/2026"},{"id":1769335497521,"name":"Drill pipe 3.5\\" Premium","serial":"N/A","quantity":175,"condition":"working","usage":"inUse","location":"Rig 12","date":"25/01/2026"},{"id":1769335525478,"name":"Drill pipe 3.5\\" Class 2","serial":"N/A","quantity":159,"condition":"working","usage":"inUse","location":"Rig 12","date":"25/01/2026"},{"id":1769335588390,"name":"Drill pipe 3.5\\" Class 2","serial":"N/A","quantity":84,"condition":"working","usage":"inUse","location":"Rig 27","date":"25/01/2026"},{"id":1769335731585,"name":"Drill pipe 3.5\\" Premium","serial":"N/A","quantity":234,"condition":"working","usage":"inUse","location":"Rig 27","date":"25/01/2026"},{"id":1769335867898,"name":"Drill pipe 3.5\\"","serial":"N/A","quantity":353,"condition":"working","usage":"inUse","location":"Rig 9","date":"25/01/2026"},{"id":1769335882273,"name":"Drill collar 4-3/4\\"","serial":"N/A","quantity":11,"condition":"working","usage":"inUse","location":"Rig 9","date":"25/01/2026"},{"id":1769335927335,"name":"Drill collar 4-3/4\\"","serial":"N/A","quantity":8,"condition":"working","usage":"inUse","location":"Rig 1","date":"25/01/2026"},{"id":1769335953839,"name":"Drill pipe 3.5\\" G105","serial":"N/A","quantity":197,"condition":"working","usage":"inUse","location":"Rig 1","date":"25/01/2026"},{"id":1769335974830,"name":"Drill pipe 3.5 S-135","serial":"N/A","quantity":139,"condition":"working","usage":"inUse","location":"Rig 1","date":"25/01/2026"},{"id":1769336047009,"name":"Drill pipe 3.5","serial":"N/A","quantity":312,"condition":"broken","usage":"broken","location":"Yard","date":"25/01/2026"},{"id":1769336069944,"name":"Drill collar 4-3/4\\"","serial":"N/A","quantity":5,"condition":"broken","usage":"broken","location":"Yard","date":"25/01/2026"},{"id":1769336086381,"name":"Drill collar 8\\"","serial":"N/A","quantity":2,"condition":"broken","usage":"broken","location":"Yard","date":"25/01/2026"},{"id":1769336104556,"name":"Drill collar 6-1/2\\"","serial":"N/A","quantity":11,"condition":"broken","usage":"broken","location":"Yard","date":"25/01/2026"},{"id":1769336198035,"name":"Traveling block Ideco 250 ton","serial":"N/A","quantity":1,"condition":"working","usage":"inUse","location":"Rig 2","date":"25/01/2026"},{"id":1769336243587,"name":"Mud pump National 9P-100","serial":"11825-H","quantity":1,"condition":"working","usage":"inUse","location":"Rig 2","date":"25/01/2026"},{"id":1769336290553,"name":"Drill pipe 3.5\\" Premium","serial":"N/A","quantity":404,"condition":"working","usage":"inUse","location":"Rig 2","date":"25/01/2026"},{"id":1769336311937,"name":"Drill pipe 4.5\\" Class 2","serial":"N/A","quantity":74,"condition":"working","usage":"inUse","location":"Rig 2","date":"25/01/2026"},{"id":1769336335116,"name":"Drill collar 4-3/4\\"","serial":"N/A","quantity":12,"condition":"working","usage":"inUse","location":"Rig 2","date":"25/01/2026"},{"id":1769336397679,"name":"Double ram Rongsheng 11\\"","serial":"K02190212C","quantity":1,"condition":"working","usage":"inUse","location":"Rig 2","date":"25/01/2026"},{"id":1769336428303,"name":"Annular Rongsheng 11\\"","serial":"SK18250","quantity":1,"condition":"working","usage":"inUse","location":"Rig 2","date":"25/01/2026"},{"id":1769336455051,"name":"Choke manifold Shenkai","serial":"N/A","quantity":1,"condition":"working","usage":"inUse","location":"Rig 2","date":"25/01/2026"},{"id":1769336486634,"name":"Kommey unit Shenkai","serial":"KY01220070","quantity":1,"condition":"working","usage":"inUse","location":"Rig 2","date":"25/01/2026"},{"id":1769336536828,"name":"Traveling block Johnson Blocks 75 ton","serial":"228-8(KR9603)","quantity":1,"condition":"working","usage":"inUse","location":"Rig 31","date":"25/01/2026"},{"id":1769336594572,"name":"Double ram Rongsheng 11\\"","serial":"K02220103C","quantity":1,"condition":"working","usage":"inUse","location":"Rig 31","date":"25/01/2026"},{"id":1769336618273,"name":"Annular Shenkai 11\\"","serial":"K03220016D","quantity":1,"condition":"working","usage":"inUse","location":"Rig 31","date":"25/01/2026"},{"id":1769336648615,"name":"Choke manifold","serial":"R 31-CH1","quantity":1,"condition":"working","usage":"inUse","location":"Rig 31","date":"25/01/2026"},{"id":1769336883188,"name":"Kommey unit DONGSO","serial":"N/A","quantity":1,"condition":"working","usage":"inUse","location":"Rig 31","date":"25/01/2026"},{"id":1769336980789,"name":"Drill pipe 3.5\\" Premium","serial":"N/A","quantity":79,"condition":"working","usage":"inUse","location":"Rig 31","date":"25/01/2026"},{"id":1769336999497,"name":"Drill pipe 3.5\\" Class 2","serial":"N/A","quantity":186,"condition":"working","usage":"inUse","location":"Rig 31","date":"25/01/2026"},{"id":1769337029835,"name":"Drill collar 4-3/4\\"","serial":"N/A","quantity":9,"condition":"working","usage":"inUse","location":"Rig 31","date":"25/01/2026"}]'; // Data Injected by Backup
-                
                 if (saved) {
                     try {
                         this.state.assets = JSON.parse(saved);
@@ -1603,18 +1081,20 @@
                 document.getElementById('main-search-input').addEventListener('keyup', (e) => {
                     if(e.key === 'Enter') this.handleMainSearch();
                 });
+                // Allow enter key in login
+                document.getElementById('login-password').addEventListener('keyup', (e) => {
+                    if(e.key === 'Enter') this.attemptLogin();
+                });
             },
 
-            // --- DASHBOARD LOGIC (UPDATED FOR QTY) ---
+            // --- DASHBOARD LOGIC ---
             updateDashboard() {
                 let workingUsed = 0;
                 let workingStock = 0;
                 let broken = 0;
 
                 this.state.assets.forEach(item => {
-                    // SUM Quantity, default to 1 if not set
                     const qty = parseInt(item.quantity) || 1; 
-
                     if (item.condition === 'broken') {
                         broken += qty;
                     } else {
@@ -1626,15 +1106,11 @@
                 this.animateNumber('stat-working-used', workingUsed);
                 this.animateNumber('stat-working-stock', workingStock);
                 this.animateNumber('stat-broken', broken);
-
-                // ALWAYS render ALL assets in the main list
                 this.renderList(this.state.assets);
             },
 
             renderList(items) {
                 const tbody = document.getElementById('assets-table-body');
-                
-                // Calculate Total Quantity for Badge
                 const totalQty = items.reduce((sum, item) => sum + (parseInt(item.quantity) || 1), 0);
                 document.getElementById('total-items-badge').innerText = `Count: ${totalQty}`;
                 
@@ -1643,15 +1119,12 @@
                     return;
                 }
 
-                // Show last 100 items by default (newest first)
                 const sorted = [...items].sort((a,b) => b.id - a.id).slice(0, 100);
-                
                 tbody.innerHTML = sorted.map(item => this.createRowHTML(item)).join('');
             },
 
             createRowHTML(item) {
                 let statusBadge = '';
-                
                 if (item.condition === 'broken') {
                     statusBadge = `<span class="bg-red-100 text-red-700 px-2 py-1 md:px-3 rounded-full text-[10px] md:text-xs font-bold"><i class="fas fa-times-circle"></i> Repair</span>`;
                 } else {
@@ -1668,211 +1141,15 @@
                         <td class="p-3">${statusBadge}</td>
                         <td class="p-3 text-center action-column">
                             <div class="flex justify-center gap-2">
-                                <button onclick="App.editItem(${item.id})" class="text-slate-300 hover:text-blue-500 transition" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button onclick="App.deleteItem(${item.id})" class="text-slate-300 hover:text-red-500 transition" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                <button onclick="App.editItem(${item.id})" class="text-slate-300 hover:text-blue-500 transition" title="Edit"><i class="fas fa-edit"></i></button>
+                                <button onclick="App.deleteItem(${item.id})" class="text-slate-300 hover:text-red-500 transition" title="Delete"><i class="fas fa-trash"></i></button>
                             </div>
                         </td>
                     </tr>
                 `;
             },
 
-            // --- SAVE LOGIC ---
-            saveItem() {
-                try {
-                    const nameEl = document.getElementById('input-name');
-                    const serialEl = document.getElementById('input-serial');
-                    const quantityEl = document.getElementById('input-quantity');
-                    const conditionEl = document.getElementById('input-condition');
-                    const usageEl = document.getElementById('input-usage');
-                    const locationEl = document.getElementById('input-location');
-
-                    if (!nameEl || !serialEl || !quantityEl || !conditionEl || !usageEl || !locationEl) {
-                        alert("Error: Form elements missing.");
-                        return;
-                    }
-
-                    const name = nameEl.value.trim();
-                    const serial = serialEl.value.trim();
-                    const quantity = parseInt(quantityEl.value) || 1; // Parse Quantity
-                    const condition = conditionEl.value;
-                    const usage = usageEl.value;
-                    const location = locationEl.value.trim();
-
-                    if (!name) { 
-                        alert("Please enter item name"); 
-                        nameEl.focus();
-                        return; 
-                    }
-                    if (!location) { 
-                        alert("Please specify location"); 
-                        locationEl.focus();
-                        return; 
-                    }
-
-                    if (this.state.editingId) {
-                        const itemIndex = this.state.assets.findIndex(i => i.id === this.state.editingId);
-                        if (itemIndex > -1) {
-                            this.state.assets[itemIndex] = {
-                                ...this.state.assets[itemIndex],
-                                name,
-                                serial: serial || "N/A",
-                                quantity,
-                                condition,
-                                usage: (condition === 'broken') ? 'broken' : usage,
-                                location
-                            };
-                        }
-                        this.state.editingId = null;
-                    } else {
-                        const newItem = {
-                            id: Date.now(),
-                            name,
-                            serial: serial || "N/A",
-                            quantity,
-                            condition,
-                            usage: (condition === 'broken') ? 'broken' : usage,
-                            location,
-                            date: new Date().toLocaleDateString('en-GB')
-                        };
-                        this.state.assets.push(newItem);
-                    }
-
-                    this.saveData();
-                    this.closeModal('add-item-modal');
-                    this.playTone('success');
-
-                } catch(err) {
-                    console.error("Save Error:", err);
-                    alert("Failed to save item.");
-                }
-            },
-
-            // --- EXPORT FUNCTIONALITY (MODIFIED TO HIDE BUTTONS & ACTIONS) ---
-            exportData() {
-                // 1. Serialize current data
-                const currentData = JSON.stringify(this.state.assets).replace(/'/g, "\\'").replace(/\\/g, '\\\\');
-
-                // 2. Clone the document
-                const clone = document.documentElement.cloneNode(true);
-
-                // 3. Remove the buttons container
-                const buttonsContainer = clone.querySelector('#action-buttons-container');
-                if (buttonsContainer) {
-                    buttonsContainer.remove();
-                }
-
-                // 4. Inject CSS to hide .action-column elements generated by JS in the backup file
-                const styleTag = document.createElement('style');
-                styleTag.textContent = '.action-column { display: none !important; }';
-                clone.querySelector('head').appendChild(styleTag);
-
-                // 5. Remove 'Actions' column header from the clone DOM (Static)
-                const actionHeaders = clone.querySelectorAll('th.action-column');
-                actionHeaders.forEach(el => el.remove());
-
-                // 6. Get HTML content from clone
-                let htmlContent = clone.outerHTML;
-
-                // 7. Inject Data
-                const searchString = "const saved = localStorage.getItem('dasco_asset_v1');";
-                const replaceString = `const saved = '${currentData}'; // Data Injected by Backup`; 
-                
-                if (htmlContent.includes(searchString)) {
-                    htmlContent = htmlContent.replace(searchString, replaceString);
-                } else {
-                    const reExportPattern = /const saved = localStorage\.getItem\('dasco_asset_v1'\) \|\| '.*';/;
-                    const reInjectedPattern = /const saved = '.*'; \/\/ Data Injected by Backup/;
-                    
-                    if (reExportPattern.test(htmlContent)) {
-                        htmlContent = htmlContent.replace(reExportPattern, replaceString);
-                    } else if (reInjectedPattern.test(htmlContent)) {
-                         htmlContent = htmlContent.replace(reInjectedPattern, replaceString);
-                    } else {
-                        htmlContent = htmlContent.replace(/const saved = .*?;/, replaceString);
-                    }
-                }
-
-                // 8. Trigger download
-                const blob = new Blob([htmlContent], { type: 'text/html' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `Dasco_Asset_Backup_${new Date().toISOString().slice(0,10)}.html`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            },
-
-            // --- REPORT & PRINT LOGIC ---
-            openReport(type) {
-                let filtered = [];
-                let title = "";
-                
-                if (type === 'used') {
-                    filtered = this.state.assets.filter(i => i.condition === 'working' && i.usage === 'inUse');
-                    title = "Report: WORKING (USE)";
-                } else if (type === 'stock') {
-                    filtered = this.state.assets.filter(i => i.condition === 'working' && i.usage === 'inStock');
-                    title = "Report: WORKING (STOCK)";
-                } else if (type === 'broken') {
-                    filtered = this.state.assets.filter(i => i.condition === 'broken');
-                    title = "Report: REPAIR";
-                }
-
-                const tbody = document.getElementById('report-body');
-                document.getElementById('report-modal-title').innerText = title;
-
-                if (filtered.length === 0) {
-                    tbody.innerHTML = `<tr><td colspan="5" class="text-center p-6 text-slate-400">No items in this category.</td></tr>`;
-                } else {
-                    tbody.innerHTML = filtered.map(item => `
-                        <tr class="hover:bg-slate-50">
-                            <td class="p-3 font-medium">${item.name}</td>
-                            <td class="p-3 text-center">${item.quantity || 1}</td>
-                            <td class="p-3 font-mono text-slate-500">${item.serial || '-'}</td>
-                            <td class="p-3">${item.location}</td>
-                            <td class="p-3 text-slate-500 text-xs">${item.date || '-'}</td>
-                        </tr>
-                    `).join('');
-                }
-
-                this.openModal('report-modal');
-            },
-
-            printReport() {
-                const title = document.getElementById('report-modal-title').innerText;
-                const rows = document.getElementById('report-body').innerHTML;
-                const count = document.getElementById('report-body').querySelectorAll('tr').length;
-                const date = new Date().toLocaleString();
-
-                const printable = document.getElementById('printable-content');
-                printable.innerHTML = `
-                    <h2>Dasco Asset - ${title}</h2>
-                    <div class="print-meta">Generated on: ${date} | Total Items: ${count}</div>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Item Name</th>
-                                <th>Qty</th>
-                                <th>Serial No.</th>
-                                <th>Location</th>
-                                <th>Date Added</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${rows}
-                        </tbody>
-                    </table>
-                `;
-                
-                window.print();
-            },
-
-            // --- ACTIONS ---
+            // --- RESTORED FUNCTIONS ---
             openAddModal() {
                 this.state.editingId = null;
                 document.getElementById('input-name').value = '';
@@ -1926,7 +1203,186 @@
                 }
             },
 
-            // --- SEARCH ANALYSIS LOGIC (UPDATED FOR QTY) ---
+            saveItem() {
+                try {
+                    const nameEl = document.getElementById('input-name');
+                    const serialEl = document.getElementById('input-serial');
+                    const quantityEl = document.getElementById('input-quantity');
+                    const conditionEl = document.getElementById('input-condition');
+                    const usageEl = document.getElementById('input-usage');
+                    const locationEl = document.getElementById('input-location');
+
+                    if (!nameEl || !serialEl || !quantityEl || !conditionEl || !usageEl || !locationEl) {
+                        alert("Error: Form elements missing."); return;
+                    }
+
+                    const name = nameEl.value.trim();
+                    const serial = serialEl.value.trim();
+                    const quantity = parseInt(quantityEl.value) || 1;
+                    const condition = conditionEl.value;
+                    const usage = usageEl.value;
+                    const location = locationEl.value.trim();
+
+                    if (!name) { alert("Please enter item name"); nameEl.focus(); return; }
+                    if (!location) { alert("Please specify location"); locationEl.focus(); return; }
+
+                    if (this.state.editingId) {
+                        const itemIndex = this.state.assets.findIndex(i => i.id === this.state.editingId);
+                        if (itemIndex > -1) {
+                            this.state.assets[itemIndex] = {
+                                ...this.state.assets[itemIndex],
+                                name, serial: serial || "N/A", quantity, condition, usage: (condition === 'broken') ? 'broken' : usage, location
+                            };
+                        }
+                        this.state.editingId = null;
+                    } else {
+                        const newItem = {
+                            id: Date.now(),
+                            name, serial: serial || "N/A", quantity, condition, usage: (condition === 'broken') ? 'broken' : usage, location, date: new Date().toLocaleDateString('en-GB')
+                        };
+                        this.state.assets.push(newItem);
+                    }
+
+                    this.saveData();
+                    this.closeModal('add-item-modal');
+                } catch(err) {
+                    console.error("Save Error:", err); alert("Failed to save item.");
+                }
+            },
+
+            // --- EXPORT & DATA MANAGEMENT ---
+            openBackupOptions() {
+                this.openModal('backup-options-modal');
+            },
+
+            openDeleteAllModal() {
+                this.closeModal('backup-options-modal');
+                document.getElementById('delete-confirm-input').value = '';
+                this.openModal('delete-all-modal');
+            },
+
+            confirmDeleteAll() {
+                const input = document.getElementById('delete-confirm-input').value;
+                if (input.trim().toLowerCase() === 'ahmed emam') {
+                    this.state.assets = [];
+                    this.saveData();
+                    this.closeModal('delete-all-modal');
+                    alert('System data has been cleared successfully.');
+                } else {
+                    alert('Confirmation incorrect. Data was NOT deleted.');
+                }
+            },
+
+            exportData(mode) {
+                const currentData = JSON.stringify(this.state.assets).replace(/'/g, "\\'").replace(/\\/g, '\\\\');
+                const clone = document.documentElement.cloneNode(true);
+
+                // Ensure all modals are closed in exported file
+                clone.querySelectorAll('.modal-backdrop.visible').forEach(el => el.classList.remove('visible'));
+                
+                // Ensure Login is Reset in exported file (user must login again)
+                // The overlay HTML exists, we just ensure it's visible by default in CSS if we didn't add the class based toggle.
+                // Our CSS says #login-overlay { display: flex } by default.
+                // But JS fades it out. We should remove the inline style opacity from clone to ensure it shows up.
+                const loginOverlay = clone.querySelector('#login-overlay');
+                if(loginOverlay) {
+                    loginOverlay.style.opacity = '';
+                    loginOverlay.style.display = '';
+                }
+
+                if (mode === 'view') {
+                    const buttonsContainer = clone.querySelector('#action-buttons-container');
+                    if (buttonsContainer) buttonsContainer.remove();
+                    
+                    const styleTag = document.createElement('style');
+                    styleTag.textContent = '.action-column { display: none !important; }';
+                    clone.querySelector('head').appendChild(styleTag);
+
+                    const actionHeaders = clone.querySelectorAll('th.action-column');
+                    actionHeaders.forEach(el => el.remove());
+                    const actionCells = clone.querySelectorAll('td.action-column');
+                    actionCells.forEach(el => el.remove());
+                }
+
+                let htmlContent = clone.outerHTML;
+                const searchString = "const saved = localStorage.getItem('dasco_asset_v1');";
+                const replaceString = `const saved = '${currentData}'; // Data Injected by Backup`; 
+                
+                if (htmlContent.includes(searchString)) {
+                    htmlContent = htmlContent.replace(searchString, replaceString);
+                } else {
+                    const reExportPattern = /const saved = localStorage\.getItem\('dasco_asset_v1'\) \|\| '.*';/;
+                    const reInjectedPattern = /const saved = '.*'; \/\/ Data Injected by Backup/;
+                    if (reExportPattern.test(htmlContent)) {
+                        htmlContent = htmlContent.replace(reExportPattern, replaceString);
+                    } else if (reInjectedPattern.test(htmlContent)) {
+                         htmlContent = htmlContent.replace(reInjectedPattern, replaceString);
+                    } else {
+                        htmlContent = htmlContent.replace(/const saved = .*?;/, replaceString);
+                    }
+                }
+
+                const prefix = mode === 'full' ? 'Dasco_System_Full_' : 'Dasco_Report_View_';
+                const blob = new Blob([htmlContent], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${prefix}${new Date().toISOString().slice(0,10)}.html`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                this.closeModal('backup-options-modal');
+            },
+
+            // --- REPORT & PRINT LOGIC ---
+            openReport(type) {
+                let filtered = [];
+                let title = "";
+                if (type === 'used') {
+                    filtered = this.state.assets.filter(i => i.condition === 'working' && i.usage === 'inUse');
+                    title = "Report: WORKING (USE)";
+                } else if (type === 'stock') {
+                    filtered = this.state.assets.filter(i => i.condition === 'working' && i.usage === 'inStock');
+                    title = "Report: WORKING (STOCK)";
+                } else if (type === 'broken') {
+                    filtered = this.state.assets.filter(i => i.condition === 'broken');
+                    title = "Report: REPAIR";
+                }
+
+                const tbody = document.getElementById('report-body');
+                document.getElementById('report-modal-title').innerText = title;
+
+                if (filtered.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="5" class="text-center p-6 text-slate-400">No items in this category.</td></tr>`;
+                } else {
+                    tbody.innerHTML = filtered.map(item => `
+                        <tr class="hover:bg-slate-50">
+                            <td class="p-3 font-medium">${item.name}</td>
+                            <td class="p-3 text-center">${item.quantity || 1}</td>
+                            <td class="p-3 font-mono text-slate-500">${item.serial || '-'}</td>
+                            <td class="p-3">${item.location}</td>
+                            <td class="p-3 text-slate-500 text-xs">${item.date || '-'}</td>
+                        </tr>
+                    `).join('');
+                }
+                this.openModal('report-modal');
+            },
+
+            printReport() {
+                const title = document.getElementById('report-modal-title').innerText;
+                const rows = document.getElementById('report-body').innerHTML;
+                const count = document.getElementById('report-body').querySelectorAll('tr').length;
+                const date = new Date().toLocaleString();
+                const printable = document.getElementById('printable-content');
+                printable.innerHTML = `
+                    <h2>Dasco Asset - ${title}</h2>
+                    <div class="print-meta">Generated on: ${date} | Total Items: ${count}</div>
+                    <table><thead><tr><th>Item Name</th><th>Qty</th><th>Serial No.</th><th>Location</th><th>Date Added</th></tr></thead><tbody>${rows}</tbody></table>
+                `;
+                window.print();
+            },
+
+            // --- SEARCH ANALYSIS LOGIC ---
             handleMainSearch() {
                 const query = document.getElementById('main-search-input').value.toLowerCase().trim();
                 if (!query) return;
@@ -1936,19 +1392,13 @@
                     (item.serial && item.serial.toLowerCase().includes(query))
                 );
 
-                let countTotal = 0;
-                let countUsed = 0;
-                let countStock = 0;
-                let countBroken = 0;
-
+                let countTotal = 0, countUsed = 0, countStock = 0, countBroken = 0;
                 results.forEach(r => {
                     const qty = parseInt(r.quantity) || 1;
                     countTotal += qty;
-
                     if (r.condition === 'broken') countBroken += qty;
                     else {
-                        if (r.usage === 'inUse') countUsed += qty;
-                        else countStock += qty;
+                        if (r.usage === 'inUse') countUsed += qty; else countStock += qty;
                     }
                 });
 
@@ -1959,26 +1409,17 @@
                 document.getElementById('res-broken').innerText = countBroken;
 
                 const tbody = document.getElementById('search-results-body');
-                if (countTotal === 0) {
+                if (countTotal === 0 && results.length === 0) {
                     tbody.innerHTML = `<tr><td colspan="5" class="text-center p-4 text-slate-400">No matching results found</td></tr>`;
                 } else {
                     tbody.innerHTML = results.map(item => {
-                        let statusTxt = "";
-                        let statusColor = "";
+                        let statusTxt = "", statusColor = "";
                         if (item.condition === 'broken') { statusTxt = "Repair"; statusColor = "text-red-600 font-bold"; }
                         else if (item.usage === 'inStock') { statusTxt = "In Stock"; statusColor = "text-blue-600 font-bold"; }
                         else { statusTxt = "In Use"; statusColor = "text-emerald-600 font-bold"; }
-                        return `
-                        <tr class="hover:bg-slate-50">
-                            <td class="p-3">${item.name}</td>
-                            <td class="p-3 text-center">${item.quantity || 1}</td>
-                            <td class="p-3 font-mono text-xs text-slate-500">${item.serial}</td>
-                            <td class="p-3 text-slate-600">${item.location}</td>
-                            <td class="p-3 ${statusColor}">${statusTxt}</td>
-                        </tr>`;
+                        return `<tr class="hover:bg-slate-50"><td class="p-3">${item.name}</td><td class="p-3 text-center">${item.quantity || 1}</td><td class="p-3 font-mono text-xs text-slate-500">${item.serial}</td><td class="p-3 text-slate-600">${item.location}</td><td class="p-3 ${statusColor}">${statusTxt}</td></tr>`;
                     }).join('');
                 }
-
                 this.openModal('search-results-modal');
             },
 
@@ -1989,37 +1430,14 @@
                 const used = document.getElementById('res-used').innerText;
                 const stock = document.getElementById('res-stock').innerText;
                 const broken = document.getElementById('res-broken').innerText;
-                
                 const date = new Date().toLocaleString();
-
                 const printable = document.getElementById('printable-content');
                 printable.innerHTML = `
                     <h2>Dasco Asset - Search Analysis</h2>
                     <div class="print-meta">Search Term: "${term}" | Generated on: ${date}</div>
-                    
-                    <div class="stats-box">
-                        <div><strong>Total:</strong> ${total}</div>
-                        <div><strong>In Use:</strong> ${used}</div>
-                        <div><strong>Stock:</strong> ${stock}</div>
-                        <div><strong>Repair:</strong> ${broken}</div>
-                    </div>
-
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Qty</th>
-                                <th>Serial</th>
-                                <th>Location</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${rows}
-                        </tbody>
-                    </table>
+                    <div class="stats-box"><div><strong>Total:</strong> ${total}</div><div><strong>In Use:</strong> ${used}</div><div><strong>Stock:</strong> ${stock}</div><div><strong>Repair:</strong> ${broken}</div></div>
+                    <table><thead><tr><th>Name</th><th>Qty</th><th>Serial</th><th>Location</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table>
                 `;
-                
                 window.print();
             },
 
@@ -2031,9 +1449,7 @@
             },
             openModal(id) { document.getElementById(id).classList.add('visible'); },
             closeModal(id) { document.getElementById(id).classList.remove('visible'); },
-            playTone(type) {
-                // Sound removed as requested
-            }
+            playTone(type) {}
         };
 
         document.addEventListener('DOMContentLoaded', () => App.init());
